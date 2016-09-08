@@ -3,78 +3,768 @@ HOST: http://polls.apiblueprint.org/
 
 # onebox-clients-api
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+This API is to manage B2B clients in order to be able to work with reserved quotas of tickets and let them resselling those tickets to the final clients.
 
-## Questions Collection [/questions]
+To do so, we have used a **API Blueprint** standard, **apiary** as an online editing and mocking tool, **aglio** to document it and **getsandbox** as a sandbox provider:
++ [API Blueprint](https://apiblueprint.org/)
++ [apiary.io](http://docs.oneboxclientsapi.apiary.io/)
++ [getsandbox.com](http://onebox-clients-api.getsandbox.com/)
++ [aglio](https://github.com/danielgtaylor/aglio)
++ [github](https://github.com/joliva-ob/onebox-clients-api)
++ [onebox-developer](http://developer.oneboxtickets.com/clients-api/)
 
-### List All Questions [GET]
+## Clients [/clients-api/1.0/clients/{clientId,clientTypeId,entityId}]
+
+List and create a client.
+
+### List all Clients [GET]
+
++ Parameters
+    + clientId (optional, number) ... Filter by the given client.
+    + clientTypeId (optional, number) ... Filter by the given type.
+    + entityId (optional, number) ... Filter by the given entity.
+
 
 + Response 200 (application/json)
 
         [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
+          {
+            "address": "string",
+            "clientB2B": {
+            "businessName": "string",
+            "clientB2BBranches":
+            [
+              {
+                "address": "string",
+                "clientId": 1,
+                "contactEmail": "string",
+                "contactName": "string",
+                "contactPhone": "string",
+                "country": "string",
+                "countrySubdivision": "string",
+                "id": 0,
+                "main": true
+              }
+            ],
+            "clientCategoryId": 0,
+            "clientId": 0,
+            "description": "string",
+            "iataCode": "string",
+            "tags": "string",
+            "taxId": "string"
+          },
+            "country": "string",
+            "countrySubdivision": "string",
+            "id": 0,
+            "name": "string",
+            "typeId": 0,
+            "users": [
+              {
+                "email": "string",
+                "id": 0,
+                "name": "string",
+                "password": "string"
+              }
+            ]
+          },
+          {
+            "address": "string",
+            "clientB2B": {
+            "businessName": "string",
+            "clientB2BBranches":
+            [
+              {
+                "address": "string",
+                "clientId": 2,
+                "contactEmail": "string",
+                "contactName": "string",
+                "contactPhone": "string",
+                "country": "string",
+                "countrySubdivision": "string",
+                "id": 0,
+                "main": true
+              }
+            ],
+            "clientCategoryId": 0,
+            "clientId": 0,
+            "description": "string",
+            "iataCode": "string",
+            "tags": "string",
+            "taxId": "string"
+          },
+            "country": "string",
+            "countrySubdivision": "string",
+            "id": 0,
+            "name": "string",
+            "typeId": 0,
+            "users": [
+              {
+                "email": "string",
+                "id": 0,
+                "name": "string",
+                "password": "string"
+              }
+            ]
+          }
         ]
 
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
-
-+ Request (application/json)
++ Response 400 (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Create a new Client [POST]
+
++ Request
+
+        {
+          "client":
+          {
+            "address": "string",
+            "clientB2B": {
+            "businessName": "string",
+            "clientB2BBranches":
+            [
+              {
+                "address": "string",
+                "clientId": 2,
+                "contactEmail": "string",
+                "contactName": "string",
+                "contactPhone": "string",
+                "country": "string",
+                "countrySubdivision": "string",
+                "id": 0,
+                "main": true
+              }
+            ],
+            "clientCategoryId": 0,
+            "clientId": 0,
+            "description": "string",
+            "iataCode": "string",
+            "tags": "string",
+            "taxId": "string"
+          },
+            "country": "string",
+            "countrySubdivision": "string",
+            "id": 0,
+            "name": "string",
+            "typeId": 0,
+            "users": [
+              {
+                "email": "string",
+                "id": 0,
+                "name": "string",
+                "password": "string"
+              }
             ]
+          }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "address": "string",
+          "clientB2B": {
+            "businessName": "string",
+            "clientB2BBranches": [
+              {
+                "address": "string",
+                "clientId": 0,
+                "contactEmail": "string",
+                "contactName": "string",
+                "contactPhone": "string",
+                "country": "string",
+                "countrySubdivision": "string",
+                "id": 0,
+                "main": true
+              }
+            ],
+            "clientCategoryId": 0,
+            "clientId": 0,
+            "description": "string",
+            "iataCode": "string",
+            "tags": "string",
+            "taxId": "string"
+          },
+          "country": "string",
+          "countrySubdivision": "string",
+          "id": 0,
+          "name": "string",
+          "typeId": 0,
+          "users": [
+            {
+              "email": "string",
+              "id": 0,
+              "name": "string",
+              "password": "string"
+            }
+          ]
         }
 
 + Response 201 (application/json)
 
-    + Headers
++ Response 400 (application/json)
 
-            Location: /questions/2
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
 
-    + Body
++ Response 401 (application/json)
 
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+## ClientEntities [/clients-api/1.0/clientEntities/{clientId,entityId}]
+
+List, create and delete a client - entity relationship.
+
+### List all ClientEntity relationships [GET]
+
++ Parameters
+    + clientId (required, number) ... Filter by the given client.
+    + entityId (required, number) ... Filter by the given entity.
+
+
++ Response 200 (application/json)
+
+        [
+          {
+            "active": true,
+            "clientId": 0,
+            "entityId": 0,
+            "id": 1
+          },
+          {
+            "active": true,
+            "clientId": 0,
+            "entityId": 0,
+            "id": 2
+          }
+        ]
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Create a new ClientEntity relation [POST]
+
++ Request
+
+        {
+          "clientEntityEntity":
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+              "active": true,
+              "clientId": 0,
+              "entityId": 0,
+              "id": 0
             }
+        }
++ Response 200 (application/json)
+
+        {
+          "active": true,
+          "clientId": 0,
+          "entityId": 0,
+          "id": 0
+        }
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Delete a ClientEntity relation [DELETE]
+
++ Parameters
+    + clientId (required, number) ... Filter by the given client.
+    + entityId (required, number) ... Filter by the given entity.
+
++ Response 200 (application/json)
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+## Counters [/clients-api/1.0/counters/{clientId,entityId,eventId}]
+
+List, create, ammend and delete a client counter.
+
+### List all Counters [GET]
+
++ Parameters
+    + clientId (required, number) ... Filter by the given client.
+    + entityId (required, number) ... Filter by the given entity.
+
++ Response 200 (application/json)
+
+        [
+          {
+            "clientId": 1,
+            "counter": 50,
+            "eventId": 2
+          },
+          {
+            "clientId": 2,
+            "counter": 10,
+            "eventId": 2
+          }
+        ]
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Create a new Counter [POST]
+
++ Request
+
+        {
+          "clientEventCounterDTO":
+            {
+              "clientId": 2,
+              "counter": 10,
+              "eventId": 2
+            }
+        }
+
++ Response 200 (application/json)
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Ammmend a new Counter [PUT]
+
++ Request
+
+        {
+          "clientEventCounterDTO":
+            {
+              "clientId": 2,
+              "counter": 10,
+              "eventId": 2
+            }
+        }
+
++ Response 200 (application/json)
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Delete a Counter [DELETE]
+
++ Parameters
+    + clientId (required, number) ... Filter by the given client.
+    + eventId (required, number) ... Filter by the given event.
+
++ Response 200 (application/json)
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+## Client - Promoter Conditions [/clients-api/1.0/conditions/{groupId,event_id,operator_id,entity_id,client_entity_id,validate}]
+
+List, create, ammend and delete a client - promoter conditions or conditions set.
+
+### List all Counters [GET]
+
++ Parameters
+    + event_id (required, number) ... Filter by the given event.
+    + entity_id (required, number) ... Filter by the given entity.
+    + operator_id (required, number) ... Filter by the given operator.
+    + client_entity_id (required, number) ... Filter by the given client entity relation.
+    + groupId (optional, number) ... Filter by the given group, this parameter invalidates any other parameter.
+
++ Response 200 (application/json)
+
+        {
+            "client_entity_id": 0,
+            "condition_group_id": 0,
+            "condition_group_type": "CLIENT_B2B_EVENT",
+            "conditions": [
+                {
+                "type_id": 0,
+                "value": {}
+                }
+            ],
+            "entity_id": 0,
+            "event_id": 0,
+            "operator_id": 0
+        }
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Create a new condition [POST]
+
++ Request
+
+        {
+          "conditions":
+          {
+            "client_entity_id": 0,
+            "condition_group_id": 0,
+            "condition_group_type": "CLIENT_B2B_EVENT",
+            "conditions": [
+              {
+                "type_id": 0,
+                "value": {}
+              }
+            ],
+            "entity_id": 0,
+            "event_id": 0,
+            "operator_id": 0
+            }
+        }
+
++ Response 200 (application/json)
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
+
+### Start applying conditions [PUT]
+
++ Parameters
+    + validate (optional, boolean, `true`) ... Check viability before to go ahead with the commit process.
+
++ Request
+
+        {
+          "clientProductsValidation":
+          {
+              "clientId": 0,
+              "oldProducts": [
+                {
+                  "conditionGroup": 0,
+                  "eventId": 0
+                }
+              ],
+              "orderType": "BOOKING",
+              "products": [
+                {
+                  "conditionGroup": 0,
+                  "eventId": 0
+                }
+              ]
+          }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "clientId": 0,
+          "details": [
+            {
+              "availableProductsLeft": 0,
+              "canBook": true,
+              "canPurchase": true,
+              "conditionGroup": 0,
+              "eventId": 0,
+              "requestedProducts": 0,
+              "valid": true
+            }
+          ],
+          "orderType": "BOOKING",
+          "valid": true
+        }
+
++ Response 201 (application/json)
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "Unauthorized",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 403 (application/json)
+
+        {
+          "error": "Forbidden",
+          "error_description": "You are not allowed to connect. Please check your credentials and try it again."
+        }
+
++ Response 404 (application/json)
+
+        {
+          "error": "404",
+          "error_description": "Resource requested not found in this server."
+        }
